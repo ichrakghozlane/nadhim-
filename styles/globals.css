@@ -1,0 +1,649 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;500;600;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════
+   VARIABLES
+══════════════════════════════════ */
+:root {
+  --g:    #1e6b35;
+  --g2:   #2d8a48;
+  --gp:   #eaf5ee;
+  --gs:   #c4e0cc;
+  --gold: #b8872a;
+  --goldp:#faf7f3;
+  --cream:#faf7f3;
+  --card: #FFFFFF;
+  --txt:  #1a1a1a;
+  --txt2: #4d4d4d;
+  --txt3: #999999;
+  --brd:  #ddd5c0;
+  --sh:   0 2px 16px rgba(0,0,0,.07);
+  --sh2:  0 6px 28px rgba(0,0,0,.14);
+  --r:    12px;
+  --rs:   8px;
+}
+[data-theme="dark"] {
+  --g:    #60c87a;
+  --g2:   #4db066;
+  --gp:   #0c2415;
+  --gs:   #1a3d24;
+  --gold: #e0b84a;
+  --goldp:#1e1500;
+  --cream:#181818;
+  --card: #242424;
+  --txt:  #f0ede5;
+  --txt2: #b0a898;
+  --txt3: #666;
+  --brd:  #383030;
+  --sh:   0 2px 16px rgba(0,0,0,.5);
+  --sh2:  0 6px 28px rgba(0,0,0,.6);
+}
+
+/* ══════════════════════════════════
+   BASE
+══════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--cream);
+  color: var(--txt);
+  direction: rtl;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════
+   BACKGROUND — exact same as design
+   The cream/beige Islamic star pattern
+══════════════════════════════════ */
+
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0; /* تحت المحتوى */
+  pointer-events: none;
+
+  background-image: url('/login.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+ opacity: 0.08 /* خلفية واجهات */
+}
+
+.page-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60 0 L65 55 L120 60 L65 65 L60 120 L55 65 L0 60 L55 55 Z' fill='white' fill-opacity='0.08'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+.page-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+/* Login: pattern covers FULL page exactly like design */
+.login-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: #faf7f3;
+  background-image: url('/login.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+ 
+}
+[data-theme="dark"] .login-bg {
+  background-color: #181818;
+  filter: brightness(0.25) sepia(0.3);
+}
+
+.page-wrap { position: relative; z-index: 1; min-height: 100vh; }
+
+/* ══════════════════════════════════
+   ICON FIX — remove black background
+   Works on light and dark themes
+══════════════════════════════════ */
+.ico {
+  object-fit: contain;
+  /* multiply makes black bg disappear on light surfaces */
+  mix-blend-mode: multiply;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .ico {
+  mix-blend-mode: screen;
+  filter: invert(1) brightness(1.2);
+}
+/* For logo2 (has ناظم text on black bg) */
+.ico-logo {
+  mix-blend-mode: multiply;
+  object-fit: contain;
+}
+[data-theme="dark"] .ico-logo {
+  mix-blend-mode: screen;
+  filter: invert(1) hue-rotate(100deg) brightness(1.4);
+}
+
+/* ══════════════════════════════════
+   HEADER
+══════════════════════════════════ */
+.hdr {
+  background: var(--card);
+  border-bottom: 2px solid var(--gs);
+  box-shadow: var(--sh);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 clamp(10px,3vw,28px);
+}
+.hdr-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 70px;
+  gap: 8px;
+}
+/* RIGHT side = settings + role (RTL: rendered on right) */
+.hdr-r { display: flex; align-items: center; gap: 8px; flex-shrink: 0; position: relative; }
+/* CENTER =
+ title */
+.hdr-c { flex: 1; text-align: center; }
+.hdr-c h1 { font-size: clamp(11px,1.8vw,15px); font-weight: 700; color: var(--g); line-height: 1.3; }
+.hdr-c p  { font-size: clamp(9px,1.2vw,11px); color: var(--txt2); }
+/* LEFT side = logo (RTL: rendered on left) */
+.hdr-l { flex-shrink: 0; }
+.hdr-l img {
+  width: 90px;
+  height: 90px;
+  margin-top: 20px; 
+}
+[data-theme="dark"] .hdr-l img { mix-blend-mode: screen; filter: invert(1) hue-rotate(100deg) brightness(1.3); }
+
+/* Settings gear */
+.gear {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--brd);
+  background: var(--card);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; color: var(--txt2);
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.gear:hover { border-color: var(--g); color: var(--g); }
+.rtag { font-size: clamp(11px,1.5vw,13px); font-weight: 700; color: var(--txt2); white-space: nowrap; }
+
+/* Dropdown */
+.drop {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: var(--card);
+  border: 2px solid var(--brd);
+  border-radius: var(--r);
+  box-shadow: var(--sh2);
+  min-width: 185px; z-index: 300;
+  overflow: hidden;
+}
+.drop-hd  { padding: 9px 15px 6px; font-size: 12px; color: var(--txt3); border-bottom: 1px solid var(--brd); }
+.drop-it  { display: flex; align-items: center; gap: 9px; padding: 10px 15px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--txt); border: none; background: none; width: 100%; text-align: right; font-family: 'Cairo',sans-serif; transition: background .15s; }
+.drop-it:hover { background: var(--cream); }
+.drop-it.red { color: #dc2626; }
+.drop-sep { height: 1px; background: var(--brd); margin: 3px 0; }
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+.nav { background: var(--card); border-bottom: 2px solid var(--brd); overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav-in {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center; /* 🔥 هذا هو السر */
+
+  gap: 8px;
+  padding: 0 16px;
+}.nb {
+  padding: 12px clamp(10px,2vw,24px);
+  font-size: clamp(13px,1.7vw,15px);
+  font-weight: 600;
+  color: var(--txt2);
+  border: none; background: none; cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all .2s;
+  white-space: nowrap;
+  font-family: 'Cairo',sans-serif;
+}
+.nb:hover { color: var(--g); }
+.nb.on    { color: var(--g); border-bottom-color: var(--g); }
+
+/* ══════════════════════════════════
+   MAIN
+══════════════════════════════════ */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 🔥 هذا هو الفراغ بين كل العناصر */
+}
+/* ══════════════════════════════════
+   BISMILLAH
+══════════════════════════════════ */
+.bism { font-family: 'Amiri',serif; font-size: clamp(20px,4vw,34px); color: var(--g); text-align: center; padding: clamp(8px,1.5vw,14px) 0 clamp(12px,2vw,20px); }
+
+/* ══════════════════════════════════
+   STATS
+══════════════════════════════════ */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stat {
+  flex: 1;
+  min-width: 160px;
+
+  background: var(--card);
+  border: 2px solid var(--brd);
+  border-radius: var(--r);
+  padding: 16px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  direction: ltr; /* 🔥 يخلي icon ديما في اليسار */
+}
+.stat img {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+.stat-info {
+  flex: 1;
+  text-align: right;
+  direction: rtl; /* الكتابة العربية تبقى صحيحة */
+}
+.stat-lbl { font-size: clamp(11px,1.5vw,13px); color: var(--txt2); font-weight: 500; }
+.stat-val { font-size: clamp(26px,4.5vw,42px); font-weight: 900; color: var(--g); line-height: 1; }
+
+/* ══════════════════════════════════
+   MOSQUE CARDS
+══════════════════════════════════ */
+.mcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%,268px),1fr)); gap: clamp(12px,2vw,18px); }
+.mcard {
+  background: var(--card);
+  border: 2px solid var(--brd);
+  border-radius: var(--r);
+  padding: clamp(14px,2.5vw,20px);
+  box-shadow: var(--sh);
+  transition: all .2s;
+}
+.mcard:hover {
+  box-shadow: var(--sh2);
+  border-color: var(--g);
+  transform: translateY(-2px);
+}
+
+.mcard-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  direction: ltr !important; /* 🔥 يوقف قلب RTL */
+}
+
+.mcard-top img {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.mcard-text {
+  text-align: right;
+  direction: rtl;
+  flex: 1;
+}
+.mcard-text > div {
+  margin-bottom: 2px;
+}
+
+.mcard-nm {
+  font-size: clamp(13px,1.9vw,16px);
+  font-weight: 700;
+  color: var(--txt);
+}
+
+.mcard-sb {
+  font-size: clamp(11px,1.4vw,12px);
+  color: var(--txt3);
+  margin-top: 2px;
+}
+.mcard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: var(--gp);
+  border-radius: var(--rs);
+
+  padding: 10px 14px; /* 🔥 زيدنا الفراغ */
+  margin-bottom: 8px; /* 🔥 يرجع الفراغ بين السطور */
+}
+
+.mcard-row-l {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  order: 1; /* 🔥 يروح لليمين */
+}
+.mcard-row-l img {
+  width: 14px;
+  height: 14px;
+}
+.mcard-row-v {
+  font-weight: 700;
+  order: 2; /* 🔥 يروح لليسار في flex RTL */}
+
+/* ══════════════════════════════════
+   BUTTONS
+══════════════════════════════════ */
+.btn {
+  background: none; border: 2px solid var(--g); color: var(--g);
+  border-radius: var(--rs); padding: clamp(6px,1.1vw,9px) clamp(11px,1.8vw,18px);
+  font-size: clamp(12px,1.5vw,13px); font-weight: 600; cursor: pointer;
+  font-family: 'Cairo',sans-serif; transition: all .2s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  white-space: nowrap;
+}
+.btn:hover           { background: var(--g); color: #fff; }
+.btn-gold            { border-color: var(--gold); color: var(--gold); }
+.btn-gold:hover      { background: var(--goldp); }
+.btn-solid           { background: var(--g); color: #fff; border-color: var(--g); }
+.btn-solid:hover     { background: var(--g2); }
+.btn-sm              { padding: 5px 10px; font-size: 12px; }
+.btn-ico             { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 6px; border-radius: 6px; color: var(--txt2); transition: all .15s; }
+.btn-ico:hover       { background: var(--cream); }
+
+/* ══════════════════════════════════
+   SEARCH
+══════════════════════════════════ */
+.sw { position: relative; margin-bottom: 14px; }
+.sinp {
+  width: 100%;
+  border: 2px solid var(--brd);
+  border-radius: var(--r);
+
+padding: 7px 12px 7px 40px;
+  font-size: clamp(12px,1.5vw,13px); /* 🔥 قيمة واحدة فقط */
+  font-family: 'Cairo', sans-serif;
+
+  background: var(--card);
+  color: var(--txt);
+  outline: none;
+  transition: border .2s;
+
+  
+}
+.sinp:focus { border-color: var(--g); }
+.sinp::placeholder { color: var(--txt3); }
+.sico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; mix-blend-mode: multiply; object-fit: contain; opacity: .5; }
+[data-theme="dark"] .sico { mix-blend-mode: screen; filter: invert(1); }
+
+/* ══════════════════════════════════
+   SELECT
+══════════════════════════════════ */
+.sel {
+  height: 38px;
+  border: 2px solid var(--brd); border-radius: var(--rs);
+  padding: 0;
+  font-size: clamp(12px,1.5vw,13px); font-family: 'Cairo',sans-serif;
+  background: var(--card); color: var(--txt); cursor: pointer; outline: none;
+  flex: 1; min-width: 130px;
+}
+
+/* ══════════════════════════════════
+   TABLE
+══════════════════════════════════ */
+.tw { background: var(--card); border: 2px solid var(--brd); border-radius: var(--r); overflow: hidden; box-shadow: var(--sh); overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; font-size: clamp(11px,1.4vw,13px); }
+.tbl th { background: var(--gp); color: var(--g); font-weight: 700; padding: clamp(8px,1.3vw,12px) clamp(8px,1.4vw,14px); text-align: right; white-space: nowrap; }
+.tbl td { padding: clamp(8px,1.3vw,12px) clamp(8px,1.4vw,14px); border-bottom: 1px solid var(--brd); text-align: right; }
+.tbl tr:hover td { background: var(--cream); }
+.tbl tr:last-child td { border-bottom: none; }
+
+/* ══════════════════════════════════
+   PILLS / TABS
+══════════════════════════════════ */
+.pills { display: flex; background: var(--cream); border-radius: var(--r); padding: 4px; gap: 3px; margin-bottom: 18px; }
+.pill { flex: 1; padding: 9px 12px; border-radius: var(--rs); border: none; background: transparent; font-family: 'Cairo',sans-serif; font-size: clamp(12px,1.6vw,14px); font-weight: 600; color: var(--txt2); cursor: pointer; transition: all .2s; white-space: nowrap; }
+.pill.on { background: var(--g); color: #fff; box-shadow: 0 2px 8px rgba(30,107,53,.3); }
+
+/* ══════════════════════════════════
+   INFO CARD
+══════════════════════════════════ */
+.icard { background: var(--card); border: 2px solid var(--brd); border-radius: var(--r); padding: clamp(14px,2.5vw,22px); box-shadow: var(--sh); }
+.irow { display: flex; justify-content: space-between; align-items: center; padding: clamp(8px,1.3vw,12px) 0; border-bottom: 1px solid var(--brd); flex-wrap: wrap; gap: 6px; }
+.irow:last-child { border-bottom: none; }
+.ilbl { color: var(--g); font-weight: 700; font-size: clamp(12px,1.6vw,14px); }
+.ival { color: var(--txt); font-size: clamp(12px,1.6vw,14px); }
+
+/* ══════════════════════════════════
+   BADGE
+══════════════════════════════════ */
+.bdg     { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.bdg-g   { background: var(--gp); color: var(--g); }
+.bdg-gld { background: var(--goldp); color: var(--gold); }
+.bdg-r   { background: #fef2f2; color: #dc2626; }
+
+/* ══════════════════════════════════
+   SCHEDULE
+══════════════════════════════════ */
+.sday { background: var(--card); border: 2px solid var(--brd); border-radius: var(--r); padding: clamp(12px,2vw,18px); box-shadow: var(--sh); margin-bottom: 12px; }
+.sday-hd { display: flex; justify-content: space-between; align-items: center; }
+.sday-nm { font-size: clamp(15px,2vw,18px); font-weight: 700; }
+.sday-cnt { font-size: 12px; color: var(--txt3); }
+.sess { background: var(--gp); border-radius: var(--rs); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.sess-nm { font-weight: 700; font-size: 14px; }
+.sess-sb { font-size: 11px; color: var(--txt3); }
+.sess-tm { font-size: 13px; font-weight: 600; direction: ltr; }
+
+/* ══════════════════════════════════
+   MODAL
+══════════════════════════════════ */
+.mbg { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 9999; display: flex; align-items: flex-start; justify-content: center; padding: 14px; padding-top: 60px; overflow-y: auto; }
+.mbox { background: var(--card); border-radius: 16px; padding: clamp(18px,3vw,30px); width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; box-shadow: var(--sh2); }
+.mhd  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.mtit { font-size: 17px; font-weight: 700; }
+.mcls { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--txt3); }
+.fld  { margin-bottom: 10px; }
+.fld label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600; }
+
+
+/* ══════════════════════════════════
+   MAP PLACEHOLDER
+══════════════════════════════════ */
+.mapph { background: var(--gp); border: 2px dashed var(--gs); border-radius: var(--r); padding: 26px 16px; text-align: center; margin-top: 14px; cursor: pointer; transition: all .2s; }
+.mapph:hover { background: var(--gs); }
+.mapph img { width: 56px; height: 56px; object-fit: contain; margin: 0 auto 8px; display: block; }
+.mapph p { color: var(--g); font-weight: 700; font-size: 14px; }
+
+/* ══════════════════════════════════
+   LOGIN
+══════════════════════════════════ */
+.login-wrap {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px; /* نقصناها شوية */
+}
+
+
+.lcard {
+  background: rgb(255, 255, 255);
+  border-radius: 16px;
+  box-shadow: var(--sh2);
+  padding: clamp(16px,3vw,24px);
+  width: 100%;
+  max-width: 400px; /* 🔥 صغّرنا العرض شوية */
+  min-height: 85vh;
+ /*max-height: 88vh;*/
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+max-height: 100vh;
+
+  border: none;   /* ← أضف هذا */
+  outline: none;  /* ← وهذا */
+}
+
+
+[data-theme="dark"] .lcard { background: rgba(28,28,28,0.95); }
+.roles { display: flex;  gap: 6px;margin-bottom: 14px; }
+.role-b {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px; /* فقط هذا */
+  padding: 8px 6px;
+
+  border: 2px solid var(--brd);
+  border-radius: var(--r);
+   background: #ffffff; 
+
+  font-size: 12px;
+  font-weight: 600;
+color: #1D6B4A; 
+}
+.role-b img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  background: #fbf6eb;        /* دائرة بيج */
+  border-radius: 40%;
+  padding: 10px;
+}
+[data-theme="dark"] .role-b img { mix-blend-mode: screen; filter: invert(1) brightness(1.2); }
+.role-b.on { border-color: var(--g); background: var(--gp); color: var(--g); }
+.eyebtn { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 3px; }
+.eyebtn img { width: 20px; height: 20px; mix-blend-mode: multiply; opacity: .55; }
+[data-theme="dark"] .eyebtn img { mix-blend-mode: screen; filter: invert(1); }
+
+/* ══════════════════════════════════
+   MISC
+══════════════════════════════════ */
+.stitle { display: flex; align-items: center; gap: 9px; font-size: clamp(14px,2.3vw,19px); font-weight: 700; margin-bottom: clamp(12px,2.5vw,20px); }
+.back   { background: none; border: none; color: var(--g); font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Cairo',sans-serif; display: flex; align-items: center; gap: 5px; margin-bottom: 12px; }
+.fgap   { display: flex; flex-wrap: wrap; gap: clamp(7px,1.4vw,12px); align-items: center; }
+.g2     { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%,280px),1fr)); gap: clamp(10px,2vw,16px); }
+.warn   { background: #fff8e1; border: 1px solid #f0c040; border-radius: var(--rs); padding: 9px 13px; font-size: 13px; color: #856404; display: flex; align-items: center; gap: 7px; margin-bottom: 14px; }
+.toast  { position: fixed; bottom: 20px; right: 20px; background: var(--g); color: #fff; padding: 10px 20px; border-radius: var(--r); font-size: 13px; font-weight: 600; box-shadow: var(--sh2); z-index: 1000; animation: toastin .3s ease; }
+@keyframes toastin { from { transform: translateX(70px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.pgin { animation: pgin .25s ease; }
+@keyframes pgin { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gs); border-radius: 3px; }
+
+/* ══════════════════════════════════
+   RESPONSIVE — Mobile & Tablet
+══════════════════════════════════ */
+
+/* Tablet (≤ 900px) */
+@media (max-width: 900px) {
+  .hdr-in { height: 60px; }
+  .hdr-l img { width: 70px; height: 70px; margin-top: 14px; }
+  .mcards { grid-template-columns: repeat(auto-fill, minmax(min(100%,220px),1fr)); }
+  .stats  { gap: 8px; }
+  .stat   { min-width: 130px; padding: 12px 14px; }
+}
+
+/* Mobile (≤ 640px) */
+@media (max-width: 640px) {
+  /* Hide table secondary columns */
+  .hm { display: none !important; }
+  .tbl td, .tbl th { padding: 7px 8px; font-size: 11px; }
+
+  /* Header */
+  .hdr-in { height: 56px; gap: 4px; }
+  .hdr-c h1 { font-size: 12px; }
+  .hdr-c p  { display: none; }
+  .hdr-l img { width: 56px; height: 56px; margin-top: 10px; }
+  .rtag { display: none; } /* hide role name on very small screens */
+
+  /* Nav tabs — scrollable horizontal */
+  .nav-in { justify-content: flex-start; gap: 2px; padding: 0 8px; }
+  .nb { padding: 10px 12px; font-size: 13px; }
+
+  /* Main content padding */
+  .page-wrap > main > div { padding-left: 12px !important; padding-right: 12px !important; padding-top: 14px !important; }
+
+  /* Mosque cards — single column */
+  .mcards { grid-template-columns: 1fr; gap: 10px; }
+
+  /* Stats — wrap tightly */
+  .stats { gap: 8px; }
+  .stat  { min-width: 110px; padding: 10px 12px; flex: 1 1 calc(50% - 8px); }
+  .stat-val { font-size: 26px; }
+
+  /* Buttons */
+  .btn { padding: 7px 12px; font-size: 12px; }
+
+  /* Grid 2 columns */
+  .g2 { grid-template-columns: 1fr; }
+
+  /* Modal full-screen on mobile */
+  .mbg { padding: 8px; padding-top: 12px; }
+  .mbox { max-width: 100%; border-radius: 12px; padding: 16px; }
+
+  /* Login card */
+  .lcard { min-height: auto; max-height: 100dvh; padding: 16px; border-radius: 12px; }
+
+  /* Filter row wraps */
+  .fgap { flex-direction: column; align-items: stretch; }
+  .fgap .sel, .fgap .sinp, .fgap .sw { width: 100%; min-width: unset; }
+
+  /* Bismillah smaller */
+  .bism { font-size: 22px; padding: 8px 0 12px; }
+
+  /* Table wrapper horizontal scroll */
+  .tw { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Pills full width */
+  .pills { gap: 2px; }
+  .pill  { padding: 8px 6px; font-size: 12px; }
+
+  /* Toast bottom-center */
+  .toast { right: 50%; transform: translateX(50%); bottom: 14px; font-size: 12px; padding: 8px 16px; }
+  @keyframes toastin { from { opacity: 0; transform: translateX(50%) translateY(10px); } to { opacity: 1; transform: translateX(50%) translateY(0); } }
+
+  /* Schedule tab */
+  .sday { padding: 12px; }
+  .sday-nm { font-size: 15px; }
+}
+
+/* Very small screens (≤ 380px) */
+@media (max-width: 380px) {
+  .hdr-c h1 { font-size: 10px; }
+  .stat { flex: 1 1 100%; }
+  .nb { padding: 8px 10px; font-size: 12px; }
+}
